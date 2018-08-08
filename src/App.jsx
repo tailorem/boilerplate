@@ -10,6 +10,7 @@ import messages from './messages.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.socket = new WebSocket("ws:localhost:3001", "protocolOne");
     this.state = {
       loading: true,
       currentUser: false, /* {name: "notBob"} */
@@ -22,37 +23,31 @@ class App extends Component {
     return Math.random().toString(36).substr(2, 6);
   }
 
-  onSubmit = (event) => {
-    // console.log(this);
-    event.preventDefault();
-    const inputs = event.target.elements;
-    const username = inputs.username.value;
-    const content = inputs.content.value;
-    const id = this.rando();
-    const newMessage = { username, content, id }
-    const messages = this.state.messages.concat(newMessage);
+  // addMessage = (message) => {
+  //   const messages = this.state.messages.concat(message);
+  //   this.setState({ messages });
+  // }
 
-    inputs.content.value = "";
-    this.setState({ messages });
+  sendMessageToServer = (message) => {
+    // console.log(message);
+    // console.log(JSON.stringify(message));
+    // datatype?
+    this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
-    this.socket = new WebSocket("ws:localhost:3001", "protocolOne");
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
+      // this.socket.send("Hi, server!");
     }
 
-// exampleSocket.onopen = function (event) {
-//   exampleSocket.send("Here's some text that the server is urgently awaiting!");
-// };
-//     send("Connected to server...?");
   }
 
   render() {
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar onSubmit={this.onSubmit} currentUser={this.state.currentUser} />
+        <ChatBar addMessage={this.sendMessageToServer} currentUser={this.state.currentUser} />
       </div>
     );
   }
