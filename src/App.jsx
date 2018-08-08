@@ -23,16 +23,17 @@ class App extends Component {
   }
 
   onSubmit = (event) => {
-    console.log(this);
+    // console.log(this);
     event.preventDefault();
     const inputs = event.target.elements;
     const username = inputs.username.value;
     const content = inputs.content.value;
     const id = this.rando();
-    // this.setState({ messages });
-    console.log("username?", username);
-    console.log("content?", content);
-    console.log("id?", id);
+    const newMessage = { username, content, id }
+    const messages = this.state.messages.concat(newMessage);
+
+    inputs.content.value = "";
+    this.setState({ messages });
   }
 
   componentDidMount() {
@@ -44,7 +45,7 @@ class App extends Component {
       const messages = this.state.messages.concat(newMessage);
       // Update the state of the app component.
       // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages});
+      this.setState({ messages });
     }, 3000);
   }
 
