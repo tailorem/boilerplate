@@ -83,3 +83,12 @@ body {
       padding: 0 10px;
       text-decoration: none;
     }
+
+    form {
+      display: flex;
+      flex: auto;
+    }
+
+    button {
+      display: none;
+    }
