@@ -4,17 +4,17 @@ import React, {Component} from 'react';
 
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-import messages from './messages.jsx';
+// import messages from './messages.jsx';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.socket = new WebSocket("ws:localhost:3001", "protocolOne");
+    this.socket = new WebSocket("ws:localhost:3001");
     this.state = {
       loading: true,
-      currentUser: false, /* {name: "notBob"} */
-      messages,
+      currentUser: "Anonymous", /* {name: "notBob"} */
+      messages: [],
       // currentUser: {name: "Taylour"},
     };
   }
@@ -23,24 +23,28 @@ class App extends Component {
     return Math.random().toString(36).substr(2, 6);
   }
 
-  // addMessage = (message) => {
-  //   const messages = this.state.messages.concat(message);
-  //   this.setState({ messages });
-  // }
+  addMessage = (message) => {
+    // console.log(message.username);
+    const messages = this.state.messages.concat(message);
+    this.setState({ messages, currentUser: message.username });
+    console.log(this.state.currentUser);
+  }
 
   sendMessageToServer = (message) => {
-    // console.log(message);
-    // console.log(JSON.stringify(message));
-    // datatype?
     this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
-      // this.socket.send("Hi, server!");
     }
 
+    this.socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      // console.log("on message", message);
+      // console.log('this', this);
+      this.addMessage(message);
+    }
   }
 
   render() {

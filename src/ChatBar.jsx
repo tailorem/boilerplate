@@ -5,7 +5,7 @@ function rando() {
 }
 
 function ChatBar(props) {
-  console.log(props);
+  // console.log(props);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -13,19 +13,21 @@ function ChatBar(props) {
     const inputs = event.target.elements;
     const username = inputs.username.value;
     const content = inputs.content.value;
-    const id = rando();
-    const newMessage = { username, content, id };
+    // const id = rando();
+    const newMessage = { username, content/*, id */};
+    // const newUser = { username };
 
     inputs.content.value = "";
     props.addMessage(newMessage);
+    // props.addCurrentUser(newUser);
   };
   // render() {
-  const currentUser = props.currentUser ? props.currentUser : { name: "Anonymous" };
+  // const currentUser = props.currentUser ? props.currentUser : { name: "Anonymous" };
   // console.log("currentUser", currentUser);
     return (
       <footer className="chatbar">
         <form onSubmit={ onSubmit }>
-          <input name="username" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={currentUser.name} />
+          <input name="username" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={props.currentUser} />
           <input name="content" className="chatbar-message" placeholder="Type a message and hit ENTER" />
           <button></button>
         </form>
