@@ -18,20 +18,21 @@ class App extends Component {
     };
   }
 
-  // rando() {
-  //   return Math.random().toString(36).substr(2, 6);
-  // }
+  rando() {
+    return Math.random().toString(36).substr(2, 6);
+  }
 
-  addMessage = (messageData) => {
+  onSubmit = (event) => {
     // console.log(this);
-    // event.preventDefault();
-    // const inputs = event.target.elements;
-    // const username = inputs.username.value;
-    // const content = inputs.content.value;
-    // const id = this.rando();
-    const newMessage = messageData;
+    event.preventDefault();
+    const inputs = event.target.elements;
+    const username = inputs.username.value;
+    const content = inputs.content.value;
+    const id = this.rando();
+    const newMessage = { username, content, id }
     const messages = this.state.messages.concat(newMessage);
 
+    inputs.content.value = "";
     this.setState({ messages });
   }
 
@@ -51,7 +52,7 @@ class App extends Component {
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar onSubmit={this.addMessage} currentUser={this.state.currentUser} />
+        <ChatBar onSubmit={this.onSubmit} currentUser={this.state.currentUser} />
       </div>
     );
   }
