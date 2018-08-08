@@ -18,34 +18,40 @@ class App extends Component {
     };
   }
 
-  rando() {
-    return Math.random().toString(36).substr(2, 6);
-  }
+  // rando() {
+  //   return Math.random().toString(36).substr(2, 6);
+  // }
 
-  onSubmit = (event) => {
+  addMessage = (messageData) => {
     // console.log(this);
-    event.preventDefault();
-    const inputs = event.target.elements;
-    const username = inputs.username.value;
-    const content = inputs.content.value;
-    const id = this.rando();
-    const newMessage = { username, content, id }
+    // event.preventDefault();
+    // const inputs = event.target.elements;
+    // const username = inputs.username.value;
+    // const content = inputs.content.value;
+    // const id = this.rando();
+    const newMessage = messageData;
     const messages = this.state.messages.concat(newMessage);
 
-    inputs.content.value = "";
     this.setState({ messages });
   }
 
   componentDidMount() {
     this.socket = new WebSocket("ws:localhost:3001", "protocolOne");
+    this.socket.onopen = (event) => {
+      console.log("Connected to server!");
+    }
+
+// exampleSocket.onopen = function (event) {
+//   exampleSocket.send("Here's some text that the server is urgently awaiting!");
+// };
+//     send("Connected to server...?");
   }
 
   render() {
-    console.log(this.socket);
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar onSubmit={this.onSubmit} currentUser={this.state.currentUser} />
+        <ChatBar onSubmit={this.addMessage} currentUser={this.state.currentUser} />
       </div>
     );
   }
