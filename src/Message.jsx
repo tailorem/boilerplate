@@ -18,6 +18,15 @@ function Message(props) {
       </div>
     );
   }
+
+  if (props.message.type === "connectedUser") {
+    return (
+      <div className="message">
+        <span className="message-content">{props.message.name || "user"} has joined</span>
+      </div>
+    );
+  }
+
   return null;
 }
 

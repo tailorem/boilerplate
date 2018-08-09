@@ -43,13 +43,15 @@ class App extends Component {
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
+      console.log("event", event);
+      this.socket.send(JSON.stringify({ type: "connectedUser" , name: this.state.currentUser }));
     }
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("incoming data", data);
 
-      if (data.type === "incomingMessage" || data.type === "incomingNotification") {
+      if (data.type === "incomingMessage" || data.type === "incomingNotification" || (data.type === "connectedUser" && data.name !== this.state.currentUser)) {
         const messages = this.state.messages.concat(data);
         this.setState({ messages });
       } else if (data.type === "connected" || data.type === "disconnected") {
@@ -60,6 +62,10 @@ class App extends Component {
         throw new Error("Unknown event type " + data.type);
       }
     }
+    // TODO: "which" user has disconnected?
+    // this.socket.onclose = (event) => {
+    //   this.socket.send(JSON.stringify({ type: "connectedUser", status: disconnected , name: this.state.currentUser })); // undefined because connection is closed (there is no state), use "old username"?
+    // }
   }
 
   render() {

@@ -50,7 +50,9 @@ const handlePostMessage = (message) => {
 
 const handlePostNotification = (message) => {
   // console.log("message", message);
-  message.type = "incomingNotification";
+  message.type = message.type === "postNotification" ? "incomingNotification" : "connectedUser";
+  // message.status = message.type === "connectedUser" ?
+  console.log("outgoing message", message);
   broadcastMessageFromClient(message);
 };
 
@@ -60,9 +62,10 @@ const handleMessageFromClient = (message) => {
 
   if (message.type === "postMessage") {
     handlePostMessage(message);
-  } else if (message.type === "postNotification") {
+  } else if (message.type === "postNotification" || message.type === "connectedUser") {
     handlePostNotification(message);
   } else {
+    console.log("message", message);
     throw new Error("Unknown event type " + message.type);
   }
 
@@ -79,12 +82,24 @@ wss.on('connection', (ws) => {
   broadcastConnections("connected");
   // ws.send(JSON.stringify(wss.clients.size));
 
-  ws.on('message', handleMessageFromClient);
+  ws.on('message', (message) => {
+    if (message.status === "disconnected") {
+      handlePostNotification(message);
+      console.log("message received: handlenotification");
+    } else {
+      handleMessageFromClient(message);
+      console.log("message received: handlemessage");
+    }
+  });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => {
+  ws.on('close', (one, two, three) => {
     console.log('Client disconnected');
+
     broadcastConnections("disconnected");
+    wss.clients.forEach(function each(client) {
+      client.send(JSON.stringify({ id: uuidv4(), type: "incomingNotification", content: "A user has disconnected." }));
+    });
   });
 });
 
