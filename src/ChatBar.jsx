@@ -1,23 +1,30 @@
+// jshint ignore: start
+
 import React, {Component} from 'react';
 
 function rando() {
   return Math.random().toString(36).substr(2, 6);
 }
 
-function ChatBar(props) {
-  console.log('props', props);
+class ChatBar extends Component {
 
-  const usernameKeypress = (event) => {
+  focus = (event) => {
+    event.preventDefault();
+    this.nameInput.focus();
+  }
+
+  usernameKeypress = (event) => {
     if(event.key == 'Enter'){
       event.preventDefault();
       const username = event.target.value;
 
       // event.target.value = "";
-      props.changeUser(username);
+      this.props.changeUser(username);
+      this.focus(event);
     }
-  };
+  }
 
-  const contentKeypress = (event) => {
+  contentKeypress = (event) => {
     if(event.key == 'Enter'){
       event.preventDefault();
       const content = event.target.value;
@@ -25,23 +32,24 @@ function ChatBar(props) {
       console.log(newMessage);
 
       event.target.value = "";
-      props.addMessage(newMessage);
-      // props.addCurrentUser(newUser);
+      this.props.addMessage(newMessage);
+      // this.props.addCurrentUser(newUser);
     }
-  };
-  // render() {
-  // const currentUser = props.currentUser ? props.currentUser : { name: "Anonymous" };
+  }
+
+  render() {
+  // console.log('this.props', this.props);
+  // const currentUser = this.props.currentUser ? this.props.currentUser : { name: "Anonymous" };
   // console.log("currentUser", currentUser);
     return (
       <footer className="chatbar">
-        <form onSubmit={(event) => event.preventDefault()}>
-          <input onKeyPress={ usernameKeypress } name="username" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={props.currentUser} />
-          <input onKeyPress={ contentKeypress } name="content" className="chatbar-message" placeholder="Type a message and hit ENTER" />
-          <button></button>
+        <form>
+          <input onKeyPress={ this.usernameKeypress } name="username" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser} />
+          <input ref={(input) => { this.nameInput = input; }} onKeyPress={ this.contentKeypress } name="content" className="chatbar-message" placeholder="Type a message and hit ENTER" />
         </form>
       </footer>
     );
-  // }
+  }
 }
 
 export default ChatBar;
