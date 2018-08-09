@@ -13,24 +13,34 @@ class App extends Component {
     this.socket = new WebSocket("ws:localhost:3001");
     this.state = {
       loading: true,
-      currentUser: "Anonymous", /* {name: "notBob"} */
+      currentUser: "Anon" + this.rando(), /* {name: "notBob"} */
       messages: [],
       // currentUser: {name: "Taylour"},
     };
   }
 
   rando() {
-    return Math.random().toString(36).substr(2, 6);
+    return Math.random().toString(10).substr(2, 3);
+  }
+
+  changeUser = (username) => {
+    console.log('got username: ', username);
+    this.setState({ currentUser: username });
   }
 
   addMessage = (message) => {
-    // console.log(message.username);
+    // message.username = this.state.currentUser;
+    console.log('message received: ', message);
     const messages = this.state.messages.concat(message);
-    this.setState({ messages, currentUser: message.username });
-    console.log(this.state.currentUser);
+    this.setState({ messages/*, currentUser: message.username*/ });
+    console.log(message);
+    // console.log(this.state.currentUser);
+    // this.sendMessageToServer(message);
   }
 
   sendMessageToServer = (message) => {
+    message.username = this.state.currentUser;
+    console.log('message sending: ', message);
     this.socket.send(JSON.stringify(message));
   }
 
@@ -50,8 +60,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <MessageList messages={this.state.messages} />
-        <ChatBar addMessage={this.sendMessageToServer} currentUser={this.state.currentUser} />
+        <MessageList messages={ this.state.messages } />
+        <ChatBar changeUser={ this.changeUser } addMessage={ this.sendMessageToServer } currentUser={ this.state.currentUser } />
       </div>
     );
   }
