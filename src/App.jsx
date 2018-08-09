@@ -22,14 +22,18 @@ class App extends Component {
     return Math.random().toString(10).substr(2, 3);
   }
 
-  changeUser = (user) => {
-    this.setState({ currentUser: user.username });
-  }
+  // changeUser = (user) => {
+  // }
 
-  sendUserToServer = (user) => {
-    // user.username = this.state.currentUser;
-    user.type = "postNotification";
-    this.socket.send(JSON.stringify(user));
+  sendNotificationToServer = (notification) => {
+    let currentUser = notification.username;
+    notification.content = `${this.state.currentUser} changed their name to ${currentUser}`;
+    // notification.username = null;
+    console.log("sending notification", notification);
+    this.setState({ currentUser });
+    // notification.username = this.state.currentUser;
+    notification.type = "postNotification";
+    this.socket.send(JSON.stringify(notification));
   }
 
   // addMessage = (message) => {
@@ -40,6 +44,7 @@ class App extends Component {
 
   sendMessageToServer = (message) => {
     message.username = this.state.currentUser;
+    console.log("sendMessage username", message.username);
     message.type = "postMessage";
     this.socket.send(JSON.stringify(message));
   }
@@ -60,7 +65,11 @@ class App extends Component {
           console.log("incomingMessage");
           break;
         case "incomingNotification":
+          // this.setState({ currentUser: data.username });
           console.log("incomingNotification");
+          console.log(data);
+          console.log("previous user:", this.state.currentUser);
+          // this.setState({ currentUser: data.username });
           break;
         default:
           throw new Error("Unknown event type " + data.type);
@@ -85,7 +94,7 @@ class App extends Component {
     return (
       <div>
         <MessageList messages={ this.state.messages } />
-        <ChatBar changeUser={ this.changeUser } addMessage={ this.sendMessageToServer } currentUser={ this.state.currentUser } />
+        <ChatBar changeUser={ this.sendNotificationToServer } addMessage={ this.sendMessageToServer } currentUser={ this.state.currentUser } />
       </div>
     );
   }

@@ -28,6 +28,7 @@ const broadcastMessageFromClient = (message) => {
 };
 
 const handlePostMessage = (message) => {
+  console.log("message", message);
   message.id = uuidv4();
   message.type = "incomingMessage";
   let newMessage = JSON.stringify(message);
@@ -35,7 +36,8 @@ const handlePostMessage = (message) => {
 };
 
 const handlePostNotification = (message) => {
-  console.log(message.type);
+  console.log("message", message);
+  message.type = "incomingNotification";
   let newMessage = JSON.stringify(message);
   broadcastMessageFromClient(newMessage);
 };
