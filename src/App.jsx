@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-// import messages from './messages.jsx';
 
 
 class App extends Component {
@@ -22,9 +21,6 @@ class App extends Component {
     return Math.random().toString(10).substr(2, 3);
   }
 
-  // changeUser = (user) => {
-  // }
-
   sendNotificationToServer = (username) => {
     console.log("not.", username);
     const notification = {};
@@ -34,15 +30,7 @@ class App extends Component {
     this.socket.send(JSON.stringify(notification));
   }
 
-  // addMessage = (message) => {
-  //   const messages = this.state.messages.concat(message);
-  //   this.setState({ messages });
-  //   // this.sendMessageToServer(message);
-  // }
-
   sendMessageToServer = (content) => {
-    // const content = event.target.value;
-    // event.target.value = "";
     const message = { content };
     console.log(message);
     message.username = this.state.currentUser;

@@ -37,6 +37,7 @@ const handlePostMessage = (message) => {
 
 const handlePostNotification = (message) => {
   console.log("message", message);
+  message.id = uuidv4();
   message.type = "incomingNotification";
   let newMessage = JSON.stringify(message);
   broadcastMessageFromClient(newMessage);
@@ -55,6 +56,7 @@ const handleMessageFromClient = (message) => {
     throw new Error("Unknown event type " + message.type);
   }
 
+  // TODO: refactor handler functions
   // if (message.type === "postMessage" && message.type === "postNotification") {
   //   throw new Error("Unknown event type " + message.type);
   // }
