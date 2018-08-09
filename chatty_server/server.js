@@ -22,31 +22,41 @@ const wss = new SocketServer({ server });
 
 
 const broadcastMessageFromClient = (message) => {
+  message.id = uuidv4();
+  // console.log("message", message);
+  message = JSON.stringify(message);
   wss.clients.forEach(function each(client) {
     client.send(message);
   });
 };
 
+const broadcastConnections = (type) => {
+  message = {
+    type,
+    users: wss.clients.size,
+    // id: uuidv4(),
+  };
+  // console.log(message);
+  wss.clients.forEach(function each(client) {
+    client.send(JSON.stringify(message));
+  });
+};
+
 const handlePostMessage = (message) => {
-  console.log("message", message);
-  message.id = uuidv4();
+  // console.log("message", message);
   message.type = "incomingMessage";
-  let newMessage = JSON.stringify(message);
-  broadcastMessageFromClient(newMessage);
+  broadcastMessageFromClient(message);
 };
 
 const handlePostNotification = (message) => {
-  console.log("message", message);
-  message.id = uuidv4();
+  // console.log("message", message);
   message.type = "incomingNotification";
-  let newMessage = JSON.stringify(message);
-  broadcastMessageFromClient(newMessage);
+  broadcastMessageFromClient(message);
 };
 
 // Defines incoming message handler
 const handleMessageFromClient = (message) => {
   message = JSON.parse(message);
-  console.log("message", message.type);
 
   if (message.type === "postMessage") {
     handlePostMessage(message);
@@ -66,11 +76,15 @@ const handleMessageFromClient = (message) => {
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  // ws.send(JSON.parse(newMessage));
+  broadcastConnections("connected");
+  // ws.send(JSON.stringify(wss.clients.size));
 
   ws.on('message', handleMessageFromClient);
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    broadcastConnections("disconnected");
+  });
 });
 

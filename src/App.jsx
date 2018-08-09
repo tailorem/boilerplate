@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 
+import NavBar from './NavBar.jsx';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
@@ -12,6 +13,7 @@ class App extends Component {
     this.socket = new WebSocket("ws:localhost:3001");
     this.state = {
       loading: true,
+      userCount: 0,
       currentUser: "Anon" + this.rando(),
       messages: [],
     };
@@ -45,10 +47,15 @@ class App extends Component {
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log("incoming data", data);
 
       if (data.type === "incomingMessage" || data.type === "incomingNotification") {
         const messages = this.state.messages.concat(data);
         this.setState({ messages });
+      } else if (data.type === "connected" || data.type === "disconnected") {
+        this.setState({ userCount: data.users });
+        // const current = this.state.currentUser;
+        // console.log("which user", current);
       } else {
         throw new Error("Unknown event type " + data.type);
       }
@@ -58,6 +65,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <NavBar userCount={this.state.userCount} />
         <MessageList messages={ this.state.messages } />
         <ChatBar changeUser={ this.sendNotificationToServer } addMessage={ this.sendMessageToServer } currentUser={ this.state.currentUser } />
       </div>
