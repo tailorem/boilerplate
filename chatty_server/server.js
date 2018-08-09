@@ -27,13 +27,37 @@ const broadcastMessageFromClient = (message) => {
   });
 };
 
+const handlePostMessage = (message) => {
+  message.id = uuidv4();
+  message.type = "incomingMessage";
+  let newMessage = JSON.stringify(message);
+  broadcastMessageFromClient(newMessage);
+};
+
+const handlePostNotification = (message) => {
+  console.log(message.type);
+  let newMessage = JSON.stringify(message);
+  broadcastMessageFromClient(newMessage);
+};
+
 // Defines incoming message handler
 const handleMessageFromClient = (message) => {
-  let newMessage;
   message = JSON.parse(message);
-  message.id = uuidv4();
-  newMessage = JSON.stringify(message);
-  broadcastMessageFromClient(newMessage);
+  console.log("message", message.type);
+
+  if (message.type === "postMessage") {
+    handlePostMessage(message);
+  } else if (message.type === "postNotification") {
+    handlePostNotification(message);
+  } else {
+    throw new Error("Unknown event type " + message.type);
+  }
+
+  // if (message.type === "postMessage" && message.type === "postNotification") {
+  //   throw new Error("Unknown event type " + message.type);
+  // }
+  // let protocol = message.type === "postMessage" ? handlePostMessage : handlePostNotification;
+
 };
 
 wss.on('connection', (ws) => {

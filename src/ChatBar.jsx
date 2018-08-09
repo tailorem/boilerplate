@@ -30,7 +30,7 @@ class ChatBar extends Component {
       event.preventDefault();
       const content = event.target.value;
       const newMessage = { content };
-      console.log(newMessage);
+      // console.log(newMessage);
 
       event.target.value = "";
       this.props.addMessage(newMessage);
