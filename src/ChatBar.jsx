@@ -16,11 +16,7 @@ class ChatBar extends Component {
   usernameKeypress = (event) => {
     if(event.key == 'Enter'){
       event.preventDefault();
-      const username = event.target.value;
-      const notification = { username };
-
-      // event.target.value = "";
-      this.props.changeUser(notification);
+      this.props.changeUser(event.target.value);
       this.focus(event);
     }
   }
@@ -28,20 +24,12 @@ class ChatBar extends Component {
   contentKeypress = (event) => {
     if(event.key == 'Enter'){
       event.preventDefault();
-      const content = event.target.value;
-      const newMessage = { content };
-      // console.log(newMessage);
-
+      this.props.addMessage(event.target.value);
       event.target.value = "";
-      this.props.addMessage(newMessage);
-      // this.props.addCurrentUser(newUser);
     }
   }
 
   render() {
-  // console.log('this.props', this.props);
-  // const currentUser = this.props.currentUser ? this.props.currentUser : { name: "Anonymous" };
-  // console.log("currentUser", currentUser);
     return (
       <footer className="chatbar">
         <form>

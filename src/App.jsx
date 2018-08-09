@@ -18,20 +18,18 @@ class App extends Component {
     };
   }
 
-  rando() {
+  rando = () => {
     return Math.random().toString(10).substr(2, 3);
   }
 
   // changeUser = (user) => {
   // }
 
-  sendNotificationToServer = (notification) => {
-    let currentUser = notification.username;
-    notification.content = `${this.state.currentUser} changed their name to ${currentUser}`;
-    // notification.username = null;
-    console.log("sending notification", notification);
-    this.setState({ currentUser });
-    // notification.username = this.state.currentUser;
+  sendNotificationToServer = (username) => {
+    console.log("not.", username);
+    const notification = {};
+    notification.content = `${this.state.currentUser} changed their name to ${username}`;
+    this.setState({ currentUser: username });
     notification.type = "postNotification";
     this.socket.send(JSON.stringify(notification));
   }
@@ -42,53 +40,32 @@ class App extends Component {
   //   // this.sendMessageToServer(message);
   // }
 
-  sendMessageToServer = (message) => {
+  sendMessageToServer = (content) => {
+    // const content = event.target.value;
+    // event.target.value = "";
+    const message = { content };
+    console.log(message);
     message.username = this.state.currentUser;
-    console.log("sendMessage username", message.username);
     message.type = "postMessage";
     this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
     this.socket.onopen = (event) => {
+      console.log("Connected to server!");
     }
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      // console.log(data);
-      switch(data.type) {
-        case "incomingMessage":
+      if (data.type === "incomingMessage" || data.type === "incomingNotification") {
         const messages = this.state.messages.concat(data);
         this.setState({ messages });
-        // this.addMessage(data);
-          console.log("incomingMessage");
-          break;
-        case "incomingNotification":
-          // this.setState({ currentUser: data.username });
-          console.log("incomingNotification");
-          console.log(data);
-          console.log("previous user:", this.state.currentUser);
-          // this.setState({ currentUser: data.username });
-          break;
-        default:
-          throw new Error("Unknown event type " + data.type);
+      } else {
+        throw new Error("Unknown event type " + data.type);
       }
     }
   }
-
-  //   const data = JSON.parse(event.data);
-  //   switch(data.type) {
-  //     case "incomingMessage":
-  //       // handle incoming message
-  //       break;
-  //     case "incomingNotification":
-  //       // handle incoming notification
-  //       break;
-  //     default:
-  //       // show an error in the console if the message type is unknown
-  //       throw new Error("Unknown event type " + data.type);
-  //   }
 
   render() {
     return (
