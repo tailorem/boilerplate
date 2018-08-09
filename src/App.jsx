@@ -13,9 +13,8 @@ class App extends Component {
     this.socket = new WebSocket("ws:localhost:3001");
     this.state = {
       loading: true,
-      currentUser: "Anon" + this.rando(), /* {name: "notBob"} */
+      currentUser: "Anon" + this.rando(),
       messages: [],
-      // currentUser: {name: "Taylour"},
     };
   }
 
@@ -23,36 +22,27 @@ class App extends Component {
     return Math.random().toString(10).substr(2, 3);
   }
 
-  changeUser = (username) => {
-    console.log('got username: ', username);
-    this.setState({ currentUser: username });
+  changeUser = (user) => {
+    this.setState({ currentUser: user.username });
   }
 
   addMessage = (message) => {
-    // message.username = this.state.currentUser;
-    console.log('message received: ', message);
     const messages = this.state.messages.concat(message);
     this.setState({ messages/*, currentUser: message.username*/ });
-    console.log(message);
-    // console.log(this.state.currentUser);
     // this.sendMessageToServer(message);
   }
 
   sendMessageToServer = (message) => {
     message.username = this.state.currentUser;
-    console.log('message sending: ', message);
     this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
     this.socket.onopen = (event) => {
-      console.log("Connected to server!");
     }
 
     this.socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      // console.log("on message", message);
-      // console.log('this', this);
       this.addMessage(message);
     }
   }

@@ -17,9 +17,10 @@ class ChatBar extends Component {
     if(event.key == 'Enter'){
       event.preventDefault();
       const username = event.target.value;
+      const newUser = { username };
 
       // event.target.value = "";
-      this.props.changeUser(username);
+      this.props.changeUser(newUser);
       this.focus(event);
     }
   }
