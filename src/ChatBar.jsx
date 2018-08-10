@@ -38,7 +38,7 @@ class ChatBar extends Component {
     return (
       <footer className="chatbar">
         <form>
-          <input onKeyPress={ this.usernameKeypress } name="username" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser} />
+          <input onKeyPress={ this.usernameKeypress } name="username" className="chatbar-username" placeholder="Your Name (Optional)" />
           <input ref={(input) => { this.nameInput = input; }} onKeyPress={ this.contentKeypress } name="content" className="chatbar-message" placeholder="Type a message and hit ENTER" />
         </form>
       </footer>

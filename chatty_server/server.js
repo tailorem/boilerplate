@@ -65,12 +65,13 @@ const handleMessageFromClient = (message) => {
 
 // Assigns color to user on connection
 const assignColor = (ws) => {
-  const colors = ["#399bb6", "#bf9235", "#bf4d35", "#d4004b"];
+  const colors = ["#399bb6", "#555", "#d4004b", "#6dc066"];
   const color = `${colors[Math.floor(Math.random()*colors.length)]}`;
   ws.send(JSON.stringify({ color }));
 };
 
 // TODO: DRY up handler functions
+// TODO: "You're connected!"
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
