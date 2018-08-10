@@ -65,7 +65,7 @@ const handleMessageFromClient = (message) => {
 
 // Assigns color to user on connection
 const assignColor = (ws) => {
-  const colors = ["#ff6347", "#399bb6", "#bf9235", "#bf4d35", "#d4004b"];
+  const colors = ["#399bb6", "#555", "#d4004b", "#6dc066"];
   const color = `${colors[Math.floor(Math.random()*colors.length)]}`;
   ws.send(JSON.stringify({ color }));
 };
