@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+
 function Message(props) {
   console.log(props);
 
@@ -24,13 +25,24 @@ function Message(props) {
     const re = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/ig;
     const found = props.message.content.match(re);
     if (found) {
-      const image = (<img src={found[0]} />);
+      console.log("found", found);
+      const split = props.message.content.split(" ");
+      const altered = split.map(element => {
+        if (element === found[0]) {
+          return (
+            <div className="message-content" style={{ maxWidth: 40 + '%', padding: 0, margin: 0 }}>
+              <img src={found[0]} style={{ padding: 0, margin: 0 }} />
+            </div>
+          );
+        }
+        return element + " ";
+      });
       return (
         <div className="message">
           <span className="message-username" style={{ color: props.message.userColor }}>{props.message.username}: </span>
-          <div style={{ maxWidth: 60 + '%', textAlign: 'left' }}>
-            <img src={found[0]} className="message-content image" style={{ display: 'inline' }} />
-          </div>
+
+            <span className="message-content">{altered}</span>
+
         </div>
       );
     } else {
@@ -47,3 +59,4 @@ function Message(props) {
 }
 
 export default Message;
+

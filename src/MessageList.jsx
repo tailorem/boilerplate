@@ -19,9 +19,6 @@ class MessageList extends Component {
     return (
       <main className="messages">
         {messageItems}
-        {/*<div className="message system">
-          Anonymous1 changed their name to nomnom.
-        </div>*/}
         <div ref={(el) => { this.messagesEnd = el; }}></div>
       </main>
     );
