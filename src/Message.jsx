@@ -31,7 +31,7 @@ function Message(props) {
         if (element === found[0]) {
           return (
             <div className="message-content" style={{ maxWidth: 40 + '%', padding: 0, margin: 0 }}>
-              <img src={found[0]} style={{ padding: 0, margin: 0 }} />
+              <img className="images" src={found[0]} />
             </div>
           );
         }
