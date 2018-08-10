@@ -28,7 +28,7 @@ function Message(props) {
       return (
         <div className="message">
           <span className="message-username" style={{ color: props.message.userColor }}>{props.message.username}: </span>
-          <div style={{ maxWidth: 40 + '%', textAlign: 'left' }}>
+          <div style={{ maxWidth: 60 + '%', textAlign: 'left' }}>
             <img src={found[0]} className="message-content image" style={{ display: 'inline' }} />
           </div>
         </div>
