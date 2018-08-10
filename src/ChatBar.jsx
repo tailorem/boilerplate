@@ -13,18 +13,23 @@ class ChatBar extends Component {
     this.nameInput.focus();
   }
 
+  // TODO: could by DRYer...?
   usernameKeypress = (event) => {
+    const value = event.target.value;
     if(event.key == 'Enter'){
+      if (value.trim().length < 1 || value === this.props.currentUser) return;
       event.preventDefault();
-      this.props.changeUser(event.target.value);
+      this.props.changeUser(value);
       this.focus(event);
     }
   }
 
   contentKeypress = (event) => {
+    const value = event.target.value;
     if(event.key == 'Enter'){
+      if (value.trim().length < 1) return;
       event.preventDefault();
-      this.props.addMessage(event.target.value);
+      this.props.addMessage(value);
       event.target.value = "";
     }
   }
