@@ -15,6 +15,7 @@ class App extends Component {
       loading: true,
       userCount: 0,
       currentUser: "Anon" + this.rando(),
+      userColor: "#555",
       messages: [],
     };
   }
@@ -23,8 +24,8 @@ class App extends Component {
     return Math.random().toString(10).substr(2, 3);
   }
 
+  // Called when user 'submits' new username
   sendNotificationToServer = (username) => {
-    console.log("not.", username);
     const notification = {};
     notification.content = `${this.state.currentUser} changed their name to ${username}`;
     this.setState({ currentUser: username });
@@ -32,32 +33,34 @@ class App extends Component {
     this.socket.send(JSON.stringify(notification));
   }
 
+  // Called when user 'submits' message
   sendMessageToServer = (content) => {
     const message = { content };
-    console.log(message);
     message.username = this.state.currentUser;
     message.type = "postMessage";
+    message.userColor = this.state.userColor;
     this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
-      console.log("event", event);
       this.socket.send(JSON.stringify({ type: "connectedUser" , name: this.state.currentUser }));
     }
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("incoming data", data);
+      console.log("MESSAGE", data);
 
+      // if data.type === "connectedUser"...
       if (data.type === "incomingMessage" || data.type === "incomingNotification" || (data.type === "connectedUser" && data.name !== this.state.currentUser)) {
         const messages = this.state.messages.concat(data);
         this.setState({ messages });
       } else if (data.type === "connected" || data.type === "disconnected") {
         this.setState({ userCount: data.users });
-        // const current = this.state.currentUser;
-        // console.log("which user", current);
+      } else if (data.color) {
+        this.setState({ userColor: data.color })
+        console.log(this.state);
       } else {
         throw new Error("Unknown event type " + data.type);
       }
