@@ -5,10 +5,10 @@ A real-time chat application built with React and WebSockets.
 ## Getting Started
 
 1. Clone this repository
-1. In the command line, navigate to ``/chatty_app`` and install all dependencies by running ``npm install``
-1. Run ``npm start``
-1. In a new command line window, navigate to ``/chatty_server`` and install all dependencies by running ``npm install``
+1. In the command line, navigate to ``/chatty_server`` and install all dependencies by running ``npm install``
 1. Run ``node server.js``
+1. In a new command line window, navigate to ``/app`` and install all dependencies by running ``npm install``
+1. Run ``npm start``
 1. Run ``open http://localhost:3000`` OR in your browser, navigate to ``http://localhost:3000/``
 
 ## Final Product
