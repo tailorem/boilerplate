@@ -7,7 +7,7 @@ function NavBar(props) {
   return (
     <nav className="navbar">
       <div id="logo-bar">
-        <img id="logo" src={'../crab.svg'} /><a href="/" className="navbar-brand">CrabbyApp</a>
+        <img id="logo" src={'../images/crab.svg'} /><a href="/" className="navbar-brand">CrabbyApp</a>
       </div>
       <span style={{ lineHeight: 75 + 'px' }}>{props.userCount} {singularOrPlural} online</span>
     </nav>
