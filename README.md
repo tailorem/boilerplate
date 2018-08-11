@@ -9,7 +9,11 @@ A real-time chat application built with React and WebSockets.
 1. Run ``npm start``
 1. In a new command line window, navigate to ``/chatty_server`` and install all dependencies by running ``npm install``
 1. Run ``node server.js``
-1. Run ``open http://localhost:3000`` OR In your browser, navigate to ``http://localhost:3000/``
+1. Run ``open http://localhost:3000`` OR in your browser, navigate to ``http://localhost:3000/``
+
+## Final Product
+
+!["Screenshot of "]()
 
 ## App Dependencies
 - react
@@ -35,8 +39,4 @@ A real-time chat application built with React and WebSockets.
 - express
 - ws
 - uuid
-
-## Final Product
-
-!["Screenshot of "]()
 
