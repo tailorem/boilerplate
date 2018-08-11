@@ -13,7 +13,8 @@ A real-time chat application built with React and WebSockets.
 
 ## Final Product
 
-!["Screenshot of "]()
+!["Screenshot 1"](https://github.com/tailorem/chattyApp/blob/master/docs/Screen%20Shot%202018-08-11%20at%2012.19.40%20AM.png?raw=true)
+!["Screenshot 2"](https://github.com/tailorem/chattyApp/blob/master/docs/Screen%20Shot%202018-08-11%20at%2012.23.50%20AM.png?raw=true)
 
 ## App Dependencies
 - react
