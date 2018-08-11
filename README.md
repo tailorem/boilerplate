@@ -1,6 +1,6 @@
 # CrabbyApp
 
-A real-time chat application built with React and WebSockets.
+A real-time chat application built with React and WebSockets from an LHL provided boilerplate.
 
 ## Getting Started
 
