@@ -20,7 +20,7 @@ class App extends Component {
     };
   }
 
-  rando = () => {
+  rando(){
     return Math.random().toString(10).substr(2, 3);
   }
 

@@ -6,6 +6,11 @@ import React, { Component } from 'react';
 
 // Renders message element based on message type and content
 class Message extends Component {
+
+  rando() {
+    return Math.random().toString(36).substr(2, 6);
+  }
+
   render() {
     // Returns username-change notification component
     if (this.props.message.type === 'incomingNotification') {
@@ -34,7 +39,7 @@ class Message extends Component {
         const altered = split.map(element => {
           if (element === found[0]) {
             return (
-              <div className='message-content' style={{ maxWidth: 60 + 'vw', padding: 0, margin: 0 }}>
+              <div key={this.rando()} className='message-content' style={{ maxWidth: 60 + 'vw', padding: 0, margin: 0 }}>
                 <img className='images' src={ found[0] } />
               </div>
             );
