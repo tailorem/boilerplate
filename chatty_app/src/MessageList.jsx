@@ -12,12 +12,11 @@ class MessageList extends Component {
   render() {
     const messages = this.props.messages;
     const messageItems = messages.map(message => {
-      if (!message.id) console.log("no id", message);
       return <Message message={ message } key={ message.id } />;
     });
 
     return (
-      <main className="messages">
+      <main className='messages'>
         { messageItems }
         <div ref={(el) => { this.messagesEnd = el; }}></div>
       </main>
