@@ -20,7 +20,7 @@ class ChatBar extends Component {
       if (value.trim().length < 1 || value === this.props.currentUser) return;
       event.preventDefault();
       this.props.changeUser(value);
-      this.focus(event);
+      event.target.value = "";      this.focus(event);
     }
   }
 
@@ -38,7 +38,7 @@ class ChatBar extends Component {
     return (
       <footer className="chatbar">
         <form>
-          <input onKeyPress={ this.usernameKeypress } name="username" className="chatbar-username" placeholder="Your Name (Optional)" />
+          <input onKeyPress={ this.usernameKeypress } name="username" className="chatbar-username" placeholder={this.props.currentUser} />
           <input ref={(input) => { this.nameInput = input; }} onKeyPress={ this.contentKeypress } name="content" className="chatbar-message" placeholder="Type a message and hit ENTER" />
         </form>
       </footer>

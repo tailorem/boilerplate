@@ -1,6 +1,6 @@
 // jshint ignore: start
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import NavBar from './NavBar.jsx';
 import MessageList from './MessageList.jsx';
@@ -45,40 +45,35 @@ class App extends Component {
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
-      this.socket.send(JSON.stringify({ type: "connectedUser" , name: this.state.currentUser }));
+      this.socket.send(JSON.stringify({ type: "connectedUser", name: this.state.currentUser }));
     }
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("MESSAGE", data);
 
-      // if data.type === "connectedUser"...
       if (data.type === "incomingMessage" || data.type === "incomingNotification" || (data.type === "connectedUser" && data.name !== this.state.currentUser)) {
         const messages = this.state.messages.concat(data);
         this.setState({ messages });
+      } else if (data.type === "connectedUser") {
+        console.log("This user has connected."); // TODO: Display welcome message to connected user
       } else if (data.type === "connected" || data.type === "disconnected") {
         this.setState({ userCount: data.users });
       } else if (data.color) {
-        this.setState({ userColor: data.color })
-        console.log(this.state);
+        this.setState({ userColor: data.color });
       } else {
         throw new Error("Unknown event type " + data.type);
       }
     }
     // TODO: "which" user has disconnected?
-    // this.socket.onclose = (event) => {
-    //   this.socket.send(JSON.stringify({ type: "connectedUser", status: disconnected , name: this.state.currentUser })); // undefined because connection is closed (there is no state), use "old username"?
-    // }
   }
 
   render() {
     return (
       <div>
-        <NavBar userCount={this.state.userCount} />
-        <MessageList messages={ this.state.messages } />
-        <ChatBar changeUser={ this.sendNotificationToServer } addMessage={ this.sendMessageToServer } currentUser={ this.state.currentUser } />
-      </div>
-    );
+        <NavBar userCount = { this.state.userCount } />
+        <MessageList messages = { this.state.messages } />
+        <ChatBar changeUser = { this.sendNotificationToServer } addMessage = { this.sendMessageToServer } currentUser = { this.state.currentUser } />
+      </div> );
   }
 }
 
