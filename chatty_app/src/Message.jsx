@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-// TODO: DRY this code up
+// TODO: DRY this code out, make better use of variables
 
 // Renders message element based on message type and content
 class Message extends Component {
@@ -12,20 +12,20 @@ class Message extends Component {
   }
 
   render() {
-    // Returns username-change notification component
+    // Returns notification component for username change
     if (this.props.message.type === 'incomingNotification') {
       return (
         <div className='message notification'>
-          <span className='message-content'>{this.props.message.content}</span>
+          <span className='message-content'>{ this.props.message.content }</span>
         </div>
       );
     }
 
-    // Returns connect/disconnect notification component
+    // Returns notification component for users connect/disconnect
     if (this.props.message.type === 'connectedUser') {
       return (
         <div className='message notification'>
-          <span className='message-content'>{this.props.message.name || 'user'} has joined</span>
+          <span className='message-content'>{ this.props.message.name || 'user' } has joined</span>
         </div>
       );
     }
