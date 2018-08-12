@@ -42,12 +42,14 @@ class App extends Component {
     this.socket.send(JSON.stringify(message));
   }
 
+  // Sends currentUser message to the server
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("Connected to server!");
       this.socket.send(JSON.stringify({ type: "connectedUser", name: this.state.currentUser }));
     }
 
+    // Receives messages from the server
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
